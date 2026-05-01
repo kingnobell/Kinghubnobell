@@ -2,8 +2,8 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "Ken",
-   LoadingTitle = "Đang chuẩn bị lực lượng...",
+   Name = "Cặc",
+   LoadingTitle = "Đang vào hỏi hỏi cc...",
    ConfigurationSaving = { Enabled = false }
 })
 
@@ -52,4 +52,4 @@ Tab:CreateButton({
 })
 
 -- Thêm mục hướng dẫn nhỏ
-Tab:CreateSection("Lưu ý: Bạn cần có đủ Xu thật để lính xuất hiện.")
+Tab:CreateSection("hack này đc làm bằng gemini")
