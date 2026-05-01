@@ -1,0 +1,100 @@
+-- Sử dụng link Rayfield ổn định nhất hiện nay
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "Soldier Hub | Fix UI",
+   LoadingTitle = "Đang kết nối Server...",
+   LoadingSubtitle = "by Gemini",
+   ConfigurationSaving = { Enabled = false }
+})
+
+local Tab1 = Window:CreateTab("Hack Tiền & Mua", nil)
+local Tab2 = Window:CreateTab("Auto Farm", nil)
+
+-- --- TĂNG XU THẬT/ẢO ---
+Tab1:CreateSection("Quản lý tiền tệ")
+
+Tab1:CreateButton({
+   Name = "Force Add +1,000,000 Xu",
+   Callback = function()
+       local player = game.Players.LocalPlayer
+       -- Quét tất cả các folder để tìm biến tiền
+       for _, v in pairs(player:GetDescendants()) do
+           if v:IsA("IntValue") or v:IsA("NumberValue") then
+               if v.Name:lower():find("xu") or v.Name:lower():find("coin") or v.Name:lower():find("gold") then
+                   v.Value = v.Value + 1000000
+               end
+           end
+       end
+       Rayfield:Notify({Title = "Thông báo", Content = "Đã thử cộng tiền vào dữ liệu máy!", Duration = 3})
+   end,
+})
+
+-- --- HACK MUA 0 XU ---
+Tab1:CreateSection("Mua lính (Ép giá 0 Xu)")
+
+local function Buy0(name)
+    local remote = game:GetService("ReplicatedStorage"):FindFirstChild("BuySoldier", true) -- Tự tìm Remote trong ReplicatedStorage
+    if remote then
+        remote:FireServer(name, 0)
+    else
+        -- Nếu không tìm thấy bằng tên chung, dùng đường dẫn bạn đã cung cấp
+        local path = game:GetService("ReplicatedStorage"):WaitForChild("ShopRemotes", 3):WaitForChild("BuySoldier", 3)
+        if path then path:FireServer(name, 0) end
+    end
+end
+
+Tab1:CreateButton({
+   Name = "Mua Immortal (0 Xu)",
+   Callback = function() Buy0("Persian Immortal") end,
+})
+
+Tab1:CreateButton({
+   Name = "Mua Spearman (0 Xu)",
+   Callback = function() Buy0("Persian Spearman") end,
+})
+
+Tab1:CreateButton({
+   Name = "Mua Archer (0 Xu)",
+   Callback = function() Buy0("Persian Archer") end,
+})
+
+-- --- AUTO FARM ---
+Tab2:CreateSection("Tự động farm xu thật")
+
+_G.AutoClick = false
+Tab2:CreateToggle({
+   Name = "Auto Click (Đánh lính)",
+   CurrentValue = false,
+   Flag = "AClick",
+   Callback = function(Value)
+      _G.AutoClick = Value
+      spawn(function()
+          local VIM = game:GetService('VirtualInputManager')
+          while _G.AutoClick do
+              -- Giả lập click chuột liên tục
+              VIM:SendMouseButtonEvent(500, 500, 0, true, game, 1)
+              VIM:SendMouseButtonEvent(500, 500, 0, false, game, 1)
+              task.wait(0.01)
+          end
+      end)
+   end,
+})
+
+_G.AutoSpam = false
+Tab2:CreateToggle({
+   Name = "Auto Spam lính (0 Xu)",
+   CurrentValue = false,
+   Flag = "ASpam",
+   Callback = function(Value)
+      _G.AutoSpam = Value
+      spawn(function()
+          while _G.AutoSpam do
+              Buy0("Persian Immortal")
+              Buy0("Persian Spearman")
+              Buy0("Persian Archer")
+              task.wait(0.3)
+          end
+      end)
+   end,
+})
