@@ -1,100 +1,55 @@
--- Sử dụng link Rayfield ổn định nhất hiện nay
+-- Tải thư viện Rayfield (Link Sirius ổn định)
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "Soldier Hub | Fix UI",
-   LoadingTitle = "Đang kết nối Server...",
-   LoadingSubtitle = "by Gemini",
+   Name = "Ken",
+   LoadingTitle = "Đang chuẩn bị lực lượng...",
    ConfigurationSaving = { Enabled = false }
 })
 
-local Tab1 = Window:CreateTab("Hack Tiền & Mua", nil)
-local Tab2 = Window:CreateTab("Auto Farm", nil)
+local Tab = Window:CreateTab("Triệu Hồi Lính", nil)
 
--- --- TĂNG XU THẬT/ẢO ---
-Tab1:CreateSection("Quản lý tiền tệ")
-
-Tab1:CreateButton({
-   Name = "Force Add +1,000,000 Xu",
+-- 1. Chức năng triệu hồi Archer
+Tab:CreateButton({
+   Name = "Triệu hồi Persian Archer (180 Xu)",
    Callback = function()
-       local player = game.Players.LocalPlayer
-       -- Quét tất cả các folder để tìm biến tiền
-       for _, v in pairs(player:GetDescendants()) do
-           if v:IsA("IntValue") or v:IsA("NumberValue") then
-               if v.Name:lower():find("xu") or v.Name:lower():find("coin") or v.Name:lower():find("gold") then
-                   v.Value = v.Value + 1000000
-               end
-           end
-       end
-       Rayfield:Notify({Title = "Thông báo", Content = "Đã thử cộng tiền vào dữ liệu máy!", Duration = 3})
+       local args = {
+           [1] = "Persian Archer",
+           [2] = 0
+       }
+       game:GetService("ReplicatedStorage"):WaitForChild("ShopRemotes"):WaitForChild("BuySoldier"):FireServer(unpack(args))
+       
+       Rayfield:Notify({Title = "Hệ thống", Content = "Đã gửi lệnh triệu hồi Xạ thủ!", Duration = 2})
    end,
 })
 
--- --- HACK MUA 0 XU ---
-Tab1:CreateSection("Mua lính (Ép giá 0 Xu)")
-
-local function Buy0(name)
-    local remote = game:GetService("ReplicatedStorage"):FindFirstChild("BuySoldier", true) -- Tự tìm Remote trong ReplicatedStorage
-    if remote then
-        remote:FireServer(name, 0)
-    else
-        -- Nếu không tìm thấy bằng tên chung, dùng đường dẫn bạn đã cung cấp
-        local path = game:GetService("ReplicatedStorage"):WaitForChild("ShopRemotes", 3):WaitForChild("BuySoldier", 3)
-        if path then path:FireServer(name, 0) end
-    end
-end
-
-Tab1:CreateButton({
-   Name = "Mua Immortal (0 Xu)",
-   Callback = function() Buy0("Persian Immortal") end,
-})
-
-Tab1:CreateButton({
-   Name = "Mua Spearman (0 Xu)",
-   Callback = function() Buy0("Persian Spearman") end,
-})
-
-Tab1:CreateButton({
-   Name = "Mua Archer (0 Xu)",
-   Callback = function() Buy0("Persian Archer") end,
-})
-
--- --- AUTO FARM ---
-Tab2:CreateSection("Tự động farm xu thật")
-
-_G.AutoClick = false
-Tab2:CreateToggle({
-   Name = "Auto Click (Đánh lính)",
-   CurrentValue = false,
-   Flag = "AClick",
-   Callback = function(Value)
-      _G.AutoClick = Value
-      spawn(function()
-          local VIM = game:GetService('VirtualInputManager')
-          while _G.AutoClick do
-              -- Giả lập click chuột liên tục
-              VIM:SendMouseButtonEvent(500, 500, 0, true, game, 1)
-              VIM:SendMouseButtonEvent(500, 500, 0, false, game, 1)
-              task.wait(0.01)
-          end
-      end)
+-- 2. Chức năng triệu hồi Spearman
+Tab:CreateButton({
+   Name = "Triệu hồi Persian Spearman (140 Xu)",
+   Callback = function()
+       local args = {
+           [1] = "Persian Spearman",
+           [2] = 0
+       }
+       game:GetService("ReplicatedStorage"):WaitForChild("ShopRemotes"):WaitForChild("BuySoldier"):FireServer(unpack(args))
+       
+       Rayfield:Notify({Title = "Hệ thống", Content = "Đã gửi lệnh triệu hồi Giáo binh!", Duration = 2})
    end,
 })
 
-_G.AutoSpam = false
-Tab2:CreateToggle({
-   Name = "Auto Spam lính (0 Xu)",
-   CurrentValue = false,
-   Flag = "ASpam",
-   Callback = function(Value)
-      _G.AutoSpam = Value
-      spawn(function()
-          while _G.AutoSpam do
-              Buy0("Persian Immortal")
-              Buy0("Persian Spearman")
-              Buy0("Persian Archer")
-              task.wait(0.3)
-          end
-      end)
+-- 3. Chức năng triệu hồi Immortal
+Tab:CreateButton({
+   Name = "Triệu hồi Persian Immortal (100 Xu)",
+   Callback = function()
+       local args = {
+           [1] = "Persian Immortal",
+           [2] = 0
+       }
+       game:GetService("ReplicatedStorage"):WaitForChild("ShopRemotes"):WaitForChild("BuySoldier"):FireServer(unpack(args))
+       
+       Rayfield:Notify({Title = "Hệ thống", Content = "Đã gửi lệnh triệu hồi Kiếm sĩ!", Duration = 2})
    end,
 })
+
+-- Thêm mục hướng dẫn nhỏ
+Tab:CreateSection("Lưu ý: Bạn cần có đủ Xu thật để lính xuất hiện.")
